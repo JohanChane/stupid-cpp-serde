@@ -45,6 +45,11 @@
 #define _SCS_HAS_ARGS(...) _SCS_BOOL(_SCS_FIRST_ARG(_SCS_END_OF_ARGUMENTS_ __VA_ARGS__)())
 #define _SCS_END_OF_ARGUMENTS_(...) _SCS_IS_PAREN(__VA_ARGS__)
 
-#define _SCS_REMOVE_PARENS(...) __VA_ARGS__
+#define _SCS_REMOVE_PARENS(...)            \
+  _SCS_IF_ELSE(_SCS_IS_PAREN(__VA_ARGS__)) \
+    (_SCS_STRIP_PARENS __VA_ARGS__)        \
+    (__VA_ARGS__)
+
+#define _SCS_STRIP_PARENS(...) __VA_ARGS__
 
 #endif // SCS_MACROS_H

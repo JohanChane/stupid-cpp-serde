@@ -30,7 +30,7 @@ _SCS_MAP_NEXT_ARGS 会递归调用自己:
 
 #define _SCS_MAP_NEXT_ARGS(m, args, ...) \
     _SCS_IF_ELSE(_SCS_HAS_ARGS(__VA_ARGS__)) ( \
-        , m(_SCS_REMOVE_PARENS(args), _SCS_FIRST_ARG(__VA_ARGS__)) \
+        , m(_SCS_REMOVE_PARENS(args), _SCS_REMOVE_PARENS(_SCS_FIRST_ARG(__VA_ARGS__))) \
         _SCS_DEFER3(__SCS_MAP_NEXT_ARGS)()(m, args, _SCS_REST_ARG(__VA_ARGS__)) \
     )(/* done */)
 ```
@@ -45,6 +45,11 @@ void map_next_args(m, args, ...) {
     }
     map_next_args(m, args, rest_args)
 }
+```
+
+```cpp
+#define _SCS_MEMBER_LIST(type, ...) \
+  SCS_MAP_ARGS(_SCS_MEMBER_FIRST, (type), __VA_ARGS__)      // type 加括号是防止有一些分号的类型, 比如: `Type<int, int>`
 ```
 
 ## `_SCS_EXPAND`
@@ -209,9 +214,23 @@ _SCS_HAS_ARGS(a, b)     // → _SCS_BOOL(_SCS_FIRST_ARG(_SCS_END_OF_ARGUMENTS_ a
 _SCS_HAS_ARGS((a, b))     // 编译不通过, 因为 _SCS_IS_PAREN 只接收一个参数
 ```
 
+## `_SCS_REMOVE_PARENS`
+
+```cpp
+#define _SCS_REMOVE_PARENS(...)            \
+  _SCS_IF_ELSE(_SCS_IS_PAREN(__VA_ARGS__)) \
+    (_SCS_STRIP_PARENS __VA_ARGS__)        \
+    (__VA_ARGS__)
+
+#define _SCS_STRIP_PARENS(...) __VA_ARGS__
+```
+
+```cpp
+_SCS_REMOVE_PARENS((abc))       // → _SCS_STRIP_PARENS (abc)
+                                // → abc
+```
+
 ## Test macro
-
-
 
 ```cpp
 #include <scs/macros.h>

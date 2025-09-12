@@ -15,8 +15,9 @@ struct Address {
 struct ContactInfo {
     std::string phone;
     std::string email;
+    std::map<int32_t, std::string> phone_extensions;
     
-    SCS_STRUCTURE(ContactInfo, phone, email);
+    SCS_STRUCTURE(ContactInfo, phone, email, phone_extensions);
 };
 
 struct Person {
@@ -40,6 +41,11 @@ int main() {
     ContactInfo contact;
     contact.phone = "555-1234";
     contact.email = "alice@example.com";
+    contact.phone_extensions = {
+        {101, "Sales"},
+        {102, "Support"},
+        {103, "HR"}
+    };
     
     Person person;
     person.id = 123;

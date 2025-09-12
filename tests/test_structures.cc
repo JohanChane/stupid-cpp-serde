@@ -1,5 +1,5 @@
 #include <gtest/gtest.h>
-#include <scs/members.h>
+#include <scs/base/members.h>
 #include <scs/serializer.h>
 #include <type_traits>
 

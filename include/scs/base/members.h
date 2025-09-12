@@ -1,10 +1,8 @@
 #ifndef SCS_MEMBERS_H
 #define SCS_MEMBERS_H
 
-#include <type_traits>
-#include <vector>
-#include <string>
 #include <tuple>
+#include "type_name.h"
 
 namespace scs {
 
@@ -24,15 +22,9 @@ struct Member {
     using ClassType = T;
     using MemberType = std::decay_t<decltype(std::declval<T>().*Ptr)>;
     static constexpr auto value = Ptr;
-    
+
     static const char* type_name() {
-        if constexpr (std::is_same_v<MemberType, int32_t>) return "int32_t";
-        else if constexpr (std::is_same_v<MemberType, double>) return "double";
-        else if constexpr (std::is_same_v<MemberType, std::string>) return "string";
-        else if constexpr (std::is_same_v<MemberType, std::vector<int32_t>>) return "vector<int32_t>";
-        else if constexpr (std::is_same_v<MemberType, std::vector<std::string>>) return "vector<string>";
-        else if constexpr (has_members_v<MemberType>) return "struct";
-        else return "unknown";
+        return TypeName<MemberType>::get();
     }
 };
 
