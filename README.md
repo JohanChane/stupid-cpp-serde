@@ -6,6 +6,139 @@ Language: [English](./README.md) | [中文](./README_ZH.md)
 
 After studying [libnop](https://github.com/google/libnop), I created a simple demo to implement serialization and deserialization in C++. I hope this helps those who want to understand how C++ handles serialization and deserialization.
 
+## Example
+
+<details>
+<summary>basic usage</summary>
+
+```cpp
+#include <iostream>
+#include <scs/serializer.h>
+
+using namespace scs;
+
+// Test struct definitions
+struct Address {
+    std::string street;
+    std::string city;
+    int32_t zip_code;
+
+    SCS_STRUCTURE(Address, street, city, zip_code);
+};
+
+struct ContactInfo {
+    std::string phone;
+    std::string email;
+
+    SCS_STRUCTURE(ContactInfo, phone, email);
+};
+
+struct Person {
+    int32_t id;
+    std::string name;
+    double salary;
+    std::vector<int32_t> scores;
+    Address address;
+    ContactInfo contact;
+
+    SCS_STRUCTURE(Person, id, name, salary, scores, address, contact);
+};
+
+int main() {
+    // Initialize test data
+    Address address;
+    address.street = "123 Main St";
+    address.city = "New York";
+    address.zip_code = 10001;
+
+    ContactInfo contact;
+    contact.phone = "555-1234";
+    contact.email = "alice@example.com";
+
+    Person person;
+    person.id = 123;
+    person.name = "Alice";
+    person.salary = 50000.50;
+    person.scores = {95, 88, 92, 78};
+    person.address = address;
+    person.contact = contact;
+
+    // Print original object
+    std::cout << "Original object:\n";
+    Serializer<Person>::debug_print(person);
+
+    // Serialize
+    std::vector<char> buffer = Serializer<Person>::serialize(person);
+    print_buffer(buffer);
+
+    // Deserialize
+    Person deserialized = Serializer<Person>::deserialize(buffer);
+
+    // Print deserialized object
+    std::cout << "Deserialized object:\n";
+    Serializer<Person>::debug_print(deserialized);
+
+    return 0;
+}
+```
+
+Output:
+
+```
+Original object:
+Start printing 6Person object
+Field type: int32_t, value: 123
+Field type: string, value: "Alice"
+Field type: double, value: 50000.5
+Field type: vector<int32_t>, value: [95, 88, 92, 78]
+Field type: struct, value: (nested struct)
+  Start printing 7Address object
+  Field type: string, value: "123 Main St"
+  Field type: string, value: "New York"
+  Field type: int32_t, value: 10001
+  Print complete
+
+Field type: struct, value: (nested struct)
+  Start printing 11ContactInfo object
+  Field type: string, value: "555-1234"
+  Field type: string, value: "alice@example.com"
+  Print complete
+
+Print complete
+
+Serialization result (113 bytes):
+7b 00 00 00 05 00 00 00 41 6c 69 63 65 00 00 00
+00 10 6a e8 40 04 00 00 00 5f 00 00 00 58 00 00
+00 5c 00 00 00 4e 00 00 00 1f 00 00 00 0b 00 00
+00 31 32 33 20 4d 61 69 6e 20 53 74 08 00 00 00
+4e 65 77 20 59 6f 72 6b 11 27 00 00 21 00 00 00
+08 00 00 00 35 35 35 2d 31 32 33 34 11 00 00 00
+61 6c 69 63 65 40 65 78 61 6d 70 6c 65 2e 63 6f
+6d
+
+Deserialized object:
+Start printing 6Person object
+Field type: int32_t, value: 123
+Field type: string, value: "Alice"
+Field type: double, value: 50000.5
+Field type: vector<int32_t>, value: [95, 88, 92, 78]
+Field type: struct, value: (nested struct)
+  Start printing 7Address object
+  Field type: string, value: "123 Main St"
+  Field type: string, value: "New York"
+  Field type: int32_t, value: 10001
+  Print complete
+
+Field type: struct, value: (nested struct)
+  Start printing 11ContactInfo object
+  Field type: string, value: "555-1234"
+  Field type: string, value: "alice@example.com"
+  Print complete
+
+Print complete
+```
+</details>
+
 ## Build & Install
 
 Build:
