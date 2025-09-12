@@ -1,5 +1,7 @@
 # Stupid C++ Serde
 
+Language: [English](./README.md) | [中文](./README_ZH.md)
+
 ## Project Purpose
 
 After studying [libnop](https://github.com/google/libnop), I created a simple demo to implement serialization and deserialization in C++. I hope this helps those who want to understand how C++ handles serialization and deserialization.

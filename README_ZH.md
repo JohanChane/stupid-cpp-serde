@@ -1,5 +1,7 @@
 # Stupid C++ Serde
 
+Language: [English](./README.md) | [中文](./README_ZH.md)
+
 ## 编写该项目的目的
 
 在学习 [libnop](https://github.com/google/libnop) 之后, 写一个简单的 demo 来实现 C++ 的序列化与反序列化。希望能帮助想了解 C++ 是如何序列化与反序列化的人。
