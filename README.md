@@ -164,6 +164,7 @@ make -j8
 Install:
 
 ```sh
+mkdir build && cd build
 cmake .. -DSCS_BUILD_TESTS=OFF -DSCS_BUILD_EXAMPLES=OFF -DCMAKE_INSTALL_PREFIX=/usr/local
 cmake --build .
 cmake --install .  # Install to system

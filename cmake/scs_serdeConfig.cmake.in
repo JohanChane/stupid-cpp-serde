@@ -1,0 +1,8 @@
+@PACKAGE_INIT@
+
+include(CMakeFindDependencyMacro)
+
+# Add any dependencies here if needed
+# find_dependency(SomeDependency REQUIRED)
+
+include("${CMAKE_CURRENT_LIST_DIR}/scs_serdeTargets.cmake")
